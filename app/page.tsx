@@ -1,3 +1,4 @@
+import WelcomeIntro from "@/components/WelcomeIntro";
 import MenuExplorer from "@/components/MenuExplorer";
 import Studio from "@/components/Studio";
 import TransformStudio from "@/components/TransformStudio";
@@ -35,6 +36,7 @@ const CONSTRAINTS: { title: string; line: string }[] = [
 export default function HomePage() {
   return (
     <div className="hs-shell">
+      <WelcomeIntro />
       <header className="hs-header">
         <p className="hs-wordmark">HackSprout</p>
         <nav className="hs-nav" aria-label="Sections">

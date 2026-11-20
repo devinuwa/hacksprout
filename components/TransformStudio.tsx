@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import FunctionalBars from "@/components/FunctionalBars";
+import { proteinImageSrc } from "@/lib/protein-images";
 
 /**
  * Transform Studio — engine v2 UI.
@@ -276,6 +278,7 @@ export default function TransformStudio() {
   };
 
   const best = result?.best ?? null;
+  const bestImg = best ? proteinImageSrc(best.proteinId) : null;
   const original = result?.original ?? null;
   const costDelta = best && original ? best.costNgn - original.costNgn : 0;
   const costDeltaPct =
@@ -540,6 +543,25 @@ export default function TransformStudio() {
                     <h4 className="hs-card-name">
                       {best.proteinName} · <span className="num">{best.portionG} g</span>
                     </h4>
+                    {bestImg ? (
+                      <figure className="tv-figure">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          className="tv-best-img"
+                          src={bestImg}
+                          alt={`${best.proteinName} — AI-generated illustration`}
+                          loading="lazy"
+                        />
+                        <figcaption className="hs-note">
+                          Generated image — how the {best.proteinName}{" "}
+                          alternative looks
+                        </figcaption>
+                      </figure>
+                    ) : (
+                      <div className="tv-best-img tv-best-img--empty" aria-hidden="true">
+                        {best.proteinName}
+                      </div>
+                    )}
                     <p className="hs-card-metric num">{fmtNgn(best.costNgn)}</p>
                     <p className="hs-card-metric-label">
                       protein-slot cost · <span className="num">{fmtG(best.proteinG)}</span>{" "}
@@ -612,6 +634,15 @@ export default function TransformStudio() {
                       Chips marked • are the properties the{" "}
                       {result.dish.cookingMethod} survival screen actually tests.
                     </p>
+                    <div className="tv-fgraph">
+                      <p className="tv-fgraph-title">
+                        Functional profile — the graph behind the screen
+                      </p>
+                      <FunctionalBars
+                        profile={best.functional}
+                        focus={best.functionalFocus.map((f) => f.property)}
+                      />
+                    </div>
                     <p className="hs-card-facts">{best.whyItWorks}</p>
                     <details className="hs-advanced">
                       <summary>
