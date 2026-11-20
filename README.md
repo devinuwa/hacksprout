@@ -29,14 +29,53 @@ Nigerian kitchen before it is recommended.
    and returns only what passes every hard constraint, ranked by a
    transparent score (cost 0.45 / protein 0.25 / time 0.15 /
    functional-fit 0.15).
-3. **Functional properties spotlight** — solubility, water-holding,
+3. **Transform Studio (engine v2)** — the Challenge 2 core flow. Enter or
+   select an **existing menu item** — one of the 12 decomposed catalogue
+   dishes, or your own dish described in structured fields (current
+   protein, portion, cooking method, selling price) — and get a credible
+   plant-based transformation of its protein: original vs best swap side by
+   side with honest ₦/% deltas, up to three alternatives, a plain-language
+   **reasoning trace**, rejection counts by gate, and — when nothing
+   survives — the named near-miss instead of a relaxed constraint. Every
+   candidate (7 plant proteins × 5 portions) passes through five hard
+   gates in order: allergen (fail closed, base components included),
+   **cooking-method survival**, protein floor (default 90% of the
+   original, at the candidate's own portion), budget (default cap: the
+   cost of the protein being replaced) and prep time. Survivors are ranked
+   by a transparent score (cost 0.35 / protein 0.25 / functional fit 0.25 /
+   familiarity 0.15). Costs are protein-slot costs — the protein component
+   only, not the full dish cost — and are labelled as such wherever they
+   appear.
+4. **Whole-Menu Dashboard (engine v2)** — the commercialisation view. One
+   click transforms all 12 catalogue dishes at once and reports how many
+   have a passing swap, the median protein-slot cost change and the
+   median protein change across the menu, a per-dish table (original vs
+   best swap, cost/protein deltas, derived-price tags, status) and the
+   whole-menu rejection breakdown by gate. The headline claim under the
+   stats is computed from the returned aggregates — it is only stated in
+   the form the numbers actually support.
+5. **Functional properties spotlight** — solubility, water-holding,
    emulsification and gelation for every protein: the cooking behaviour
    that decides whether a swap survives the kitchen.
-4. **Evidence strip** — every number carries its source; derived prices
+6. **Evidence strip** — every number carries its source; derived prices
    are labelled derived.
-5. **Join form** — "Tell us about your kitchen". No auth, no accounts.
+7. **Join form** — "Tell us about your kitchen". No auth, no accounts.
 
-## Guardrails (non-negotiable, enforced in `lib/engine.ts`)
+### Method-survival prediction (engine v2)
+
+Whether a protein can survive a dish's cooking method is predicted by a
+rule-based screening model (`METHOD_REQUIREMENTS` in `lib/transform.ts`):
+each method (grill, fry, boil, soup, stew, wrap, raw) declares which
+functional properties it tests and the minimum level each must reach,
+with the food-science reason recorded next to the rule — e.g. grilling
+requires gelation ≥ Moderate *or* water-holding High ("structure on the
+skewer") plus water-holding ≥ Moderate ("stays juicy under dry heat").
+The functional profiles are qualitative, literature-based descriptors, so
+this is a structured prediction over qualitative data — **not** a
+lab-validated simulation — and it is documented as such wherever its
+output is shown.
+
+## Guardrails (non-negotiable, enforced in `lib/engine.ts` and `lib/transform.ts`)
 
 - **Hard constraints beat scores.** Budget, protein floor, time,
   equipment and stock are pass/fail; scoring only ranks survivors. If
@@ -49,9 +88,15 @@ Nigerian kitchen before it is recommended.
   because kebab here is served with groundnut yaji. Unknown allergen
   status excludes, never assumes safe. An exclusion outside the supported
   set is rejected with a 400 rather than silently ignored.
-- **Strict API validation.** `POST /api/explore` rejects unknown fields,
-  wrong types and out-of-range values with 400 and a clear message. The
-  client and server share one schema (`parseExploreRequest`).
+- **Strict API validation.** `POST /api/explore`, `POST /api/transform`
+  and `POST /api/transform-menu` reject unknown fields, wrong types and
+  out-of-range values with 400 and a clear message. The client and server
+  share one schema per route (`parseExploreRequest`,
+  `parseTransformRequest`, `parseTransformMenuRequest`). In the transform
+  engine the same five gates apply to catalogue dishes and user-entered
+  dishes alike, and the budget cap is never relaxed silently — when
+  nothing survives, the cheapest near-miss is named in the reasoning
+  trace.
 - **No invented numbers.** Cost = `priceNgnPerKg × portion / 1000`,
   protein = `proteinGPer100g × portion / 100`, straight from
   `lib/proteins.ts`. Dish base components are checked for allergens,
@@ -101,6 +146,20 @@ API:
   (`availableIngredients: null` = no stock restriction; allergen synonyms
   like "groundnut" are accepted and canonicalised.)
 - `GET /api/menu` — the fixed menu with functional profiles attached.
+- `POST /api/transform` — engine v2, one dish. Body: `{ dishId }` for a
+  catalogue dish (see `lib/dishes.ts`), or `{ dish: { name,
+  currentProteinId, currentPortionG, cookingMethod, sellingPriceNgn,
+  baseComponentIds? } }` for a user-entered dish — exactly one of the
+  two — plus optional `{ budgetCapNgn, minProteinRatio (default 0.9),
+  maxPrepMinutes, avoidAllergens }`. Returns the original summary, the
+  best transformation, up to three alternatives, rejection counts and
+  examples by gate, the near-miss when nothing survives, and the
+  plain-language `trace`.
+- `POST /api/transform-menu` — engine v2, whole menu. Body: `{}` or the
+  same optional opts as above. Transforms all 12 catalogue dishes and
+  returns per-dish results plus aggregates (dishes transformed, dishes
+  with a survivor, median cost/protein deltas, rejection totals by
+  reason).
 
 ## Deploy to Vercel
 
@@ -116,8 +175,12 @@ API:
 ## Layout
 
 ```
-app/            page, layout, globals.css, api/explore, api/menu
-components/     MenuExplorer, Studio, FunctionalSpotlight, JoinForm
+app/            page, layout, globals.css, api/explore, api/menu,
+                api/transform, api/transform-menu
+components/     MenuExplorer, Studio, TransformStudio, MenuDashboard,
+                FunctionalSpotlight, JoinForm
 lib/            proteins.ts + ingredients.ts (verified dataset — the only
                 source of nutrition/price values), menu.ts, engine.ts
+                (v1 constraint studio), dishes.ts + transform.ts
+                (v2 dish transformation + whole-menu mode)
 ```

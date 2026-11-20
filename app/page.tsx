@@ -1,5 +1,7 @@
 import MenuExplorer from "@/components/MenuExplorer";
 import Studio from "@/components/Studio";
+import TransformStudio from "@/components/TransformStudio";
+import MenuDashboard from "@/components/MenuDashboard";
 import FunctionalSpotlight from "@/components/FunctionalSpotlight";
 import JoinForm from "@/components/JoinForm";
 
@@ -38,6 +40,8 @@ export default function HomePage() {
         <nav className="hs-nav" aria-label="Sections">
           <a href="#menu">Menu</a>
           <a href="#studio">Studio</a>
+          <a href="#transform">Transform</a>
+          <a href="#dashboard">Dashboard</a>
           <a href="#why">Why it works</a>
           <a href="#join">Join</a>
         </nav>
@@ -79,6 +83,10 @@ export default function HomePage() {
       <MenuExplorer />
 
       <Studio />
+
+      <TransformStudio />
+
+      <MenuDashboard />
 
       <FunctionalSpotlight />
 
