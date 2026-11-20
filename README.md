@@ -37,7 +37,7 @@ Nigerian kitchen before it is recommended.
    side with honest ₦/% deltas, up to three alternatives, a plain-language
    **reasoning trace**, rejection counts by gate, and — when nothing
    survives — the named near-miss instead of a relaxed constraint. Every
-   candidate (7 plant proteins × 5 portions) passes through five hard
+   candidate (8 plant proteins × 5 portions) passes through five hard
    gates in order: allergen (fail closed, base components included),
    **cooking-method survival**, protein floor (default 90% of the
    original, at the candidate's own portion), budget (default cap: the

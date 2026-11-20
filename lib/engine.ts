@@ -184,7 +184,7 @@ export const DISH_CONTEXTS: DishContext[] = [
     requiredEquipment: ["grill"],
     componentIngredientIds: ["groundnut", "onion", "sweet-pepper"],
     functionalFocus: ["waterHolding", "gelation"],
-    prepDeltaByProtein: { "soy-chunks": 10, mushrooms: -5 },
+    prepDeltaByProtein: { "soy-chunks": 10, mushrooms: -5, seitan: 30 }, // seitan: make from vital wheat gluten first (≈60 min on the kebab path)
   },
   {
     id: "shawarma",
@@ -195,7 +195,7 @@ export const DISH_CONTEXTS: DishContext[] = [
     requiredEquipment: ["grill"],
     componentIngredientIds: ["wheat-flour", "cabbage", "carrot"],
     functionalFocus: ["waterHolding", "emulsification"],
-    prepDeltaByProtein: { "soy-chunks": 10, mushrooms: -5 },
+    prepDeltaByProtein: { "soy-chunks": 10, mushrooms: -5, seitan: 30 }, // seitan: make from vital wheat gluten first (≈60 min on the kebab path)
   },
   {
     id: "jollof-side",
@@ -206,7 +206,7 @@ export const DISH_CONTEXTS: DishContext[] = [
     requiredEquipment: ["frying_pan"],
     componentIngredientIds: ["rice", "tomato", "vegetable-oil"],
     functionalFocus: ["waterHolding", "emulsification"],
-    prepDeltaByProtein: { "soy-chunks": 10, mushrooms: -5 },
+    prepDeltaByProtein: { "soy-chunks": 10, mushrooms: -5, seitan: 30 }, // seitan: make from vital wheat gluten first (≈60 min on the kebab path)
   },
   {
     id: "egusi-soup",
@@ -217,7 +217,7 @@ export const DISH_CONTEXTS: DishContext[] = [
     requiredEquipment: ["pot"],
     componentIngredientIds: ["palm-oil", "amaranth-greens", "onion"],
     functionalFocus: ["emulsification", "gelation"],
-    prepDeltaByProtein: { mushrooms: -5 },
+    prepDeltaByProtein: { mushrooms: -5, seitan: 30 },
   },
 ];
 

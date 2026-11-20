@@ -362,6 +362,10 @@ export const FAMILIARITY: Record<string, { score: number; note: string }> = {
     score: 0.4,
     note: "universally known — but as a seasoning; unusual as the main protein",
   },
+  seitan: {
+    score: 0.4,
+    note: "arriving via vegan restaurants and imported vital wheat gluten; still new to most Nigerian kitchens — and it IS gluten, so it is excluded wherever wheat is",
+  },
 };
 
 /* ---------------------------------------------------------------- prep model */
@@ -384,6 +388,7 @@ const PREP_DELTA_BY_PROTEIN: Record<string, number> = {
   egusi: 10, // grind the seed
   bambara: 20, // hard legume — long boil to soften
   mushrooms: -5, // no prep beyond cleaning
+  seitan: 30, // make from vital wheat gluten: knead, rest, simmer — ≈60 min total on the grill path (estimate; the flour-wash route takes longer)
 };
 
 function prepMinutesFor(protein: ProteinEntry, method: CookingMethod): number {

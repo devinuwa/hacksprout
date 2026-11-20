@@ -107,7 +107,10 @@ export default function HomePage() {
               the named dataset rows: soy chunks 41.71 g/100 g (USDA “Meat
               extender”, FDC 174268); awara 17.27 g/100 g (USDA firm tofu, FDC
               172475); egusi 19.5 g/100 g (WAFCT 06_035); bambara 19.5 g/100 g
-              (WAFCT 03_001); dawadawa 33.1 g/100 g (WAFCT 03_042); mushrooms
+              (WAFCT 03_001); dawadawa 33.1 g/100 g (WAFCT 03_042); seitan
+              25.0 g/100 g prepared (USDA wheat gluten, FDC 172449 — dry vital
+              wheat gluten is 75.2 g/100 g before hydration, FDC 168147);
+              mushrooms
               3.09 g/100 g (USDA, FDC 169376 — a white-mushroom proxy for Abuja
               oyster mushrooms, flagged as such); chicken 23.0 g/100 g (WAFCT
               07_033); beef 20.3 g/100 g (WAFCT 07_023). Dish ingredients are
@@ -120,13 +123,15 @@ export default function HomePage() {
               retail median (228 observations, computed from the data file);
               chicken ₦7,059/kg is Numbeo Abuja via the team&apos;s price
               records; soy chunks ₦8,850/kg is packaged retail (Supermart.ng,
-              Nutrela). Four prices are honestly labelled{" "}
+              Nutrela). Six prices are honestly labelled{" "}
               <em>derived/modelled</em> because no market series exists: awara
               ₦450/kg (from the ₦650/kg soybean price and a ~2 kg yield),
               bambara ₦960/kg (WFP cowpea band), egusi ₦1,591/kg (WFP
               groundnut proxy — a floor value), dawadawa ₦5,000/kg (modelled
-              placeholder, used at 5–10 g per serving), and soy milk ₦900/L
-              (the weakest price in the set). WFP prices are survey medians,
+              placeholder, used at 5–10 g per serving), soy milk ₦900/L
+              (the weakest price in the set), and seitan ₦2,000/kg (flour-wash
+              derivation from ≈₦1,300/kg wheat flour at a ~0.65 kg yield per
+              kg of flour; labour not costed). WFP prices are survey medians,
               not a live feed — no live price feed exists for Nigerian
               informal markets.
             </p>

@@ -121,6 +121,7 @@ const PROTEIN_OPTIONS: { id: string; label: string }[] = [
   { id: "bambara", label: "Bambara groundnut" },
   { id: "mushrooms", label: "Mushrooms" },
   { id: "dawadawa", label: "Dawadawa (locust bean)" },
+  { id: "seitan", label: "Seitan (wheat gluten)" },
 ];
 
 const METHOD_OPTIONS: { id: string; label: string }[] = [

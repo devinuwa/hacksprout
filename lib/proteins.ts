@@ -172,6 +172,25 @@ export const PROTEINS: ProteinEntry[] = [
       "WAFCT 2019 code 03_042 — 'African locust bean, fermented (soumbala)', 33.1 g/100 g",
   },
   {
+    id: "seitan",
+    name: "Seitan (wheat gluten)",
+    proteinGPer100g: 25.0,
+    priceNgnPerKg: 2000,
+    priceBasis:
+      "derived — modelled from the wheat flour price (Nigerian wheat meal ≈ ₦1,300/kg; flour-wash route: ~1 kg flour yields ~0.65 kg prepared seitan → ≈ ₦2,000/kg prepared; labour not costed). No verified Nigerian retail price series for seitan exists — verify at market",
+    allergens: ["gluten"],
+    functional: {
+      solubility: "Low",
+      waterHolding: "High",
+      emulsification: "Low",
+      gelation: "High",
+    },
+    kitchenMeaning:
+      "The chewiest, most meat-like plant protein — the gluten network itself is the structure. Simmer in a dawadawa-rich broth and finish with yaji for a kebab-style bite.",
+    source:
+      "USDA FoodData Central SR Legacy — 'Wheat gluten' (FDC 172449), 25.0 g/100 g PREPARED seitan. Dry vital wheat gluten is 75.2 g/100 g (FDC 168147) before hydration — do not confuse the two figures.",
+  },
+  {
     id: "chicken",
     name: "Chicken (animal reference)",
     proteinGPer100g: 23.0,
