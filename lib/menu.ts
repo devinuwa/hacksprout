@@ -43,7 +43,7 @@ export interface MenuCategory {
 }
 
 export const MENU_SOURCE_NOTE =
-  "Menu and prices from Veggie Victory (veggievictory.com/menu/), extracted 2026-11-20, with the lapses listed below fixed. Grilled skewer dishes are listed as kebab.";
+  "Menu and prices from Veggie Victory, with the lapses listed below fixed. Grilled skewer dishes are listed as kebab.";
 
 export const MENU_CATEGORIES: MenuCategory[] = [
   {

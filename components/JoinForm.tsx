@@ -11,10 +11,17 @@ const KITCHEN_TYPES = [
   "other",
 ] as const;
 
+/**
+ * Where kitchen enquiries land: the team inbox, via FormSubmit's AJAX
+ * endpoint. NEXT_PUBLIC_LEAD_ENDPOINT overrides it when set (e.g. a
+ * Formspree URL) — the env value always wins.
+ */
+const FORMSUBMIT_ENDPOINT =
+  "https://formsubmit.co/ajax/inuwamuhammad930@gmail.com";
+
 type Status =
   | { kind: "idle" }
   | { kind: "sending" }
-  | { kind: "demo" }
   | { kind: "sent" }
   | { kind: "error"; message: string };
 
@@ -29,7 +36,8 @@ export default function JoinForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [fieldError, setFieldError] = useState<string | null>(null);
 
-  const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim();
+  const endpoint =
+    process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || FORMSUBMIT_ENDPOINT;
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,6 +51,8 @@ export default function JoinForm() {
       return;
     }
     const payload = {
+      _subject: "HackSprout — new kitchen enquiry",
+      _template: "table",
       fullName: fullName.trim(),
       kitchenName: kitchenName.trim(),
       kitchenType,
@@ -52,31 +62,32 @@ export default function JoinForm() {
       consent: true,
       source: "hacksprout-join-form",
     };
-    if (!endpoint) {
-      // No inbox configured: be honest that nothing was sent.
-      setStatus({ kind: "demo" });
-      return;
-    }
     setStatus({ kind: "sending" });
     try {
       const res = await fetch(endpoint, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+        },
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error(`Inbox returned ${res.status}`);
       setStatus({ kind: "sent" });
     } catch {
+      // Honest failure: nothing was sent, and the typed entry stays on
+      // screen so the user can retry without re-typing.
       setStatus({
         kind: "error",
         message:
-          "We could not reach the team inbox just now — nothing was sent. Please try again.",
+          "We could not send your message just now — nothing was sent. Your entries are still here; please try again.",
       });
     }
   }
 
   return (
     <section id="join" className="hs-section">
+      <p className="hs-kicker">Work with us</p>
       <h2 className="hs-section-title">Tell us about your kitchen</h2>
       <p className="hs-section-lede">
         No account, no password. Tell us who you are and the dish you would
@@ -152,16 +163,10 @@ export default function JoinForm() {
         <button type="submit" className="hs-button" disabled={status.kind === "sending"}>
           {status.kind === "sending" ? "Sending…" : "Send"}
         </button>
-        {status.kind === "demo" && (
-          <p className="hs-warning" role="status">
-            Demo mode: in production this reaches our team inbox. No endpoint is
-            configured on this deployment, so nothing was sent anywhere.
-          </p>
-        )}
         {status.kind === "sent" && (
           <p className="hs-warning" role="status">
-            Thank you — your details reached the team inbox. We will reach out on
-            WhatsApp.
+            Thank you — your message was sent to the team inbox. We will reach
+            out on WhatsApp.
           </p>
         )}
         {status.kind === "error" && (
